@@ -15,7 +15,11 @@ export function UseGallery() {
 export function GalleryProvider({ children }: { children: React.ReactNode }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const { data, isLoading, isError } = useQuery(
+  const {
+    data: dataStatistic,
+    isLoading,
+    isError,
+  } = useQuery(
     ["photoStatistics", selectedImage],
     () => getStatisticsForPhoto(selectedImage || ""),
     {
@@ -24,7 +28,6 @@ export function GalleryProvider({ children }: { children: React.ReactNode }) {
       cacheTime: 3600000,
     }
   );
-  console.log(data);
 
   const openModal = (id: string) => {
     setSelectedImage(id);
@@ -35,9 +38,10 @@ export function GalleryProvider({ children }: { children: React.ReactNode }) {
     setSelectedImage(null);
     setModalOpen(false);
   };
+
   return (
     <GalleryContext.Provider
-      value={{ modalOpen, openModal, closeModal, selectedImage, data }}
+      value={{ modalOpen, openModal, closeModal, selectedImage, dataStatistic }}
     >
       {children}
     </GalleryContext.Provider>

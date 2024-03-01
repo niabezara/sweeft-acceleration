@@ -23,9 +23,15 @@ export default function SideMenu() {
   );
 }
 const SidebarContainer = styled.div`
-  padding-bottom: 12px;
-  width: 20%;
-  color: white;
+  display: none;
+  visibility: hidden;
+  @media (min-width: 500px) {
+    display: inline-block;
+    visibility: visible;
+    padding-bottom: 12px;
+    width: 20%;
+    color: white;
+  }
 `;
 
 const SidebarSection = styled.div`

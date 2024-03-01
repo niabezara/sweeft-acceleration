@@ -2,6 +2,7 @@ import { useRef } from "react";
 import styled from "styled-components";
 import { UseGallery } from "../../context/Gallerycontext";
 import { Photo } from "../../interfaces/GalleryTypes";
+import { UseSearch } from "../../context/Searchcontext";
 
 interface ModalProps {
   children: React.ReactNode;
@@ -9,16 +10,18 @@ interface ModalProps {
 }
 
 export default function SliderModal({ Open }: ModalProps) {
-  const { data } = UseGallery();
+  const { dataStatistic } = UseGallery();
+  const { data } = UseSearch();
 
   const RetRef = useRef<HTMLDivElement>(null);
+  console.log(dataStatistic);
 
   if (!Open) return null;
   return (
     <>
       <div />
       <RetModal ref={RetRef}>
-        
+        <p>{dataStatistic?.id}</p>
       </RetModal>
     </>
   );

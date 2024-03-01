@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Photo } from "./GalleryTypes";
+import { ItemData, Photo } from "./GalleryTypes";
 
 export interface Pagination {
   previousPage: number | null;
@@ -13,7 +13,7 @@ export interface SearchContextProps {
   searchQuery: string;
   searchHistory: string[];
   handleKeyDown: (e: any) => void;
-
+  data: Photo[];
   setSearchQuery: Dispatch<SetStateAction<string>>;
   filteredData: Photo[] | null;
   isLoading: boolean;
@@ -28,5 +28,5 @@ export interface GalleryContextProps {
   openModal: (id: string) => void;
   closeModal: () => void;
   selectedImage: string | null;
-  data: Photo[] | [];
+  dataStatistic: ItemData;
 }

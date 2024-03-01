@@ -71,6 +71,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
         handleKeyDown,
         setSearchQuery,
         filteredData,
+        data,
         isLoading,
         isError,
         popularPhotos,

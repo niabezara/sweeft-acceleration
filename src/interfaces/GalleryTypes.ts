@@ -89,3 +89,26 @@ export type Photo = {
   links: Links;
   user: User;
 };
+
+// for statistic
+interface HistoricalValue {
+  date: string;
+  value: number;
+}
+
+interface HistoricalData {
+  change: number;
+  resolution: string;
+  quantity: number;
+  values: HistoricalValue[];
+}
+
+interface DownloadsData {
+  total: number;
+  historical: HistoricalData;
+}
+
+export interface ItemData {
+  id: string;
+  downloads: DownloadsData;
+}
