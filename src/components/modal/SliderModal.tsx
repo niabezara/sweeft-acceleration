@@ -22,7 +22,9 @@ export default function SliderModal({ imageUrl, Open }: ModalProps) {
       <div />
       <RetModal ref={RetRef}>
         <img src={imageUrl} alt="Image" />
-        <p>{dataStatistic?.id}</p>
+        <p>Downloads{dataStatistic?.downloads.total}</p>
+        <p>Likes{dataStatistic?.likes.total}</p>
+        <p>Views{dataStatistic?.views.total}</p>
       </RetModal>
     </>
   );

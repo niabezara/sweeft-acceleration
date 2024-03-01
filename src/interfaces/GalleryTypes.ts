@@ -91,24 +91,38 @@ export type Photo = {
 };
 
 // for statistic
-interface HistoricalValue {
+type DateValue = {
   date: string;
   value: number;
-}
+};
 
-interface HistoricalData {
+type HistoricalData = {
   change: number;
   resolution: string;
   quantity: number;
-  values: HistoricalValue[];
-}
+  values: DateValue[];
+};
 
-interface DownloadsData {
+type StatsCategory = {
   total: number;
   historical: HistoricalData;
-}
+};
 
-export interface ItemData {
+export type Data = {
   id: string;
-  downloads: DownloadsData;
-}
+  downloads: StatsCategory & {
+    historical: HistoricalData & {
+      values: DateValue[];
+    };
+  };
+  views: StatsCategory & {
+    historical: HistoricalData & {
+      values: DateValue[];
+    };
+  };
+  likes: StatsCategory & {
+    historical: HistoricalData & {
+      values: DateValue[];
+    };
+  };
+};

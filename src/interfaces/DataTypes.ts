@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { ItemData, Photo } from "./GalleryTypes";
+import { Data, Photo } from "./GalleryTypes";
 
 export interface Pagination {
   previousPage: number | null;
@@ -31,6 +31,6 @@ export interface GalleryContextProps {
   setSaveimg: Dispatch<SetStateAction<string | undefined>>;
   saveimg: string | undefined;
   selectedImage: string | null;
-  dataStatistic: ItemData;
+  dataStatistic: Data;
   isLoading: boolean;
 }
