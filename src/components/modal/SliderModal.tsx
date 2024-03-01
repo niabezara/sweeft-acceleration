@@ -1,32 +1,27 @@
 import { useRef } from "react";
 import styled from "styled-components";
 import { UseGallery } from "../../context/Gallerycontext";
-import { Photo } from "../../interfaces/GalleryTypes";
-import { UseSearch } from "../../context/Searchcontext";
 import { useDisableBodyScroll } from "../../hooks/use-disable-scroll";
 import useOnClickOutside from "../../hooks/use-click-outside";
 
 interface ModalProps {
   children: React.ReactNode;
+  imageUrl: string | undefined;
   Open: boolean;
 }
 
-export default function SliderModal({ Open }: ModalProps) {
-  const { dataStatistic, closeModal } = UseGallery();
-  const { data } = UseSearch();
+export default function SliderModal({ imageUrl, Open }: ModalProps) {
+  const { dataStatistic, closeModal, isLoading } = UseGallery();
   const RetRef = useRef<HTMLDivElement>(null);
-  useDisableBodyScroll(Open);
   useOnClickOutside(RetRef, closeModal);
-  console.log(dataStatistic);
-  const activeId = dataStatistic?.id;
-  const activeData = data?.find((item) => item.id === activeId);
+  useDisableBodyScroll(Open);
 
-  if (!Open) return null;
+  if (!Open || isLoading) return null;
   return (
     <>
       <div />
       <RetModal ref={RetRef}>
-        <img src={activeData?.urls.regular} alt="Image" />
+        <img src={imageUrl} alt="Image" />
         <p>{dataStatistic?.id}</p>
       </RetModal>
     </>
@@ -43,7 +38,7 @@ const RetModal = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  background-color: var(--color-header);
+  background-color: #fff;
   padding: 3rem;
   border-radius: 8px;
   flex-direction: column;

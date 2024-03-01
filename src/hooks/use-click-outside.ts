@@ -2,8 +2,7 @@ import { RefObject, useEffect, useCallback } from "react";
 
 function useOnClickOutside(
   ref: RefObject<HTMLElement>,
-  handler: (event: Event) => void,
-  isWorking?: boolean
+  handler: (event: Event) => void
 ) {
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
@@ -24,10 +23,6 @@ function useOnClickOutside(
   );
 
   useEffect(() => {
-    if (isWorking) {
-      return;
-    }
-
     const handleClick = (event: MouseEvent) => handleClickOutside(event);
     const handleKey = (event: KeyboardEvent) => handleEscapeKey(event);
 
@@ -38,7 +33,7 @@ function useOnClickOutside(
       document.removeEventListener("mousedown", handleClick);
       document.removeEventListener("keydown", handleKey);
     };
-  }, [handleClickOutside, handleEscapeKey, isWorking]);
+  }, [handleClickOutside, handleEscapeKey]);
 
   return handleClickOutside;
 }

@@ -6,7 +6,7 @@ import SliderModal from "../modal/SliderModal";
 
 export default function Gallery() {
   const { filteredData } = UseSearch();
-  const { openModal, modalOpen } = UseGallery();
+  const { openModal, modalOpen, saveimg } = UseGallery();
   return (
     <Container>
       {filteredData && filteredData.length > 0 ? (
@@ -15,13 +15,13 @@ export default function Gallery() {
             key={photo.id}
             src={photo.urls.small}
             alt=""
-            onClick={() => openModal(photo.id)}
+            onClick={() => openModal(photo.id, photo.urls.small)}
           />
         ))
       ) : (
         <NotFound>No results found.</NotFound>
       )}
-      <SliderModal children={undefined} Open={modalOpen} />
+      <SliderModal children={undefined} Open={modalOpen} imageUrl={saveimg} />
     </Container>
   );
 }

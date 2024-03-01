@@ -14,6 +14,7 @@ export interface SearchContextProps {
   searchHistory: string[];
   handleKeyDown: (e: any) => void;
   data: Photo[];
+
   setSearchQuery: Dispatch<SetStateAction<string>>;
   filteredData: Photo[] | null;
   isLoading: boolean;
@@ -25,8 +26,11 @@ export interface SearchContextProps {
 
 export interface GalleryContextProps {
   modalOpen: boolean;
-  openModal: (id: string) => void;
+  openModal: (id: string, img: string) => void;
   closeModal: () => void;
+  setSaveimg: Dispatch<SetStateAction<string | undefined>>;
+  saveimg: string | undefined;
   selectedImage: string | null;
   dataStatistic: ItemData;
+  isLoading: boolean;
 }
