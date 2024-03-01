@@ -11,6 +11,9 @@ export interface Pagination {
 
 export interface SearchContextProps {
   searchQuery: string;
+  searchHistory: string[];
+  handleKeyDown: (e: any) => void;
+
   setSearchQuery: Dispatch<SetStateAction<string>>;
   filteredData: Photo[] | null;
   isLoading: boolean;

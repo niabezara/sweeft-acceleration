@@ -14,6 +14,7 @@ export function UseSearch() {
 
 export function SearchProvider({ children }: { children: React.ReactNode }) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
 
   const { data, isLoading, isError } = useQuery(
     ["photos", searchQuery],
@@ -33,6 +34,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     cacheTime: 3600000,
   });
 
+  //   filter photos
   const searchQ = typeof searchQuery === "string" ? searchQuery : "";
   const filteredData = searchQ
     ? data?.filter((item: Photo | null | undefined) =>
@@ -40,10 +42,33 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
       )
     : popularPhotos;
 
+  // search history
+  const updateSearchHistory = (query: any) => {
+    if (query.trim() !== "") {
+      setSearchHistory((prevHistory) => {
+        if (!prevHistory.includes(query)) {
+          return [query, ...prevHistory];
+        }
+        return prevHistory;
+      });
+    }
+    console.log(searchHistory);
+  };
+
+  //   if the user press enter to save that history
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      updateSearchHistory(searchQuery);
+    }
+  };
+
   return (
     <SearchContext.Provider
       value={{
         searchQuery,
+        searchHistory,
+        handleKeyDown,
         setSearchQuery,
         filteredData,
         isLoading,

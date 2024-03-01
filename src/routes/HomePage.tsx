@@ -13,6 +13,8 @@ export default function HomePage() {
 
 const Container = styled.div`
   display: flex;
+  margin: 20px;
   flex-direction: column;
   width: 100%;
+  gap: 2rem;
 `;
