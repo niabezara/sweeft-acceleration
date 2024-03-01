@@ -5,13 +5,16 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { SearchProvider } from "./context/Searchcontext.tsx";
+import { GalleryProvider } from "./context/Gallerycontext.tsx";
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <SearchProvider>
-          <App />
+          <GalleryProvider>
+            <App />
+          </GalleryProvider>
         </SearchProvider>
       </BrowserRouter>
     </QueryClientProvider>

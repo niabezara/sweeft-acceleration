@@ -22,3 +22,11 @@ export interface SearchContextProps {
   popularLoading: boolean;
   popularError: boolean;
 }
+
+export interface GalleryContextProps {
+  modalOpen: boolean;
+  openModal: (id: string) => void;
+  closeModal: () => void;
+  selectedImage: string | null;
+  data: Photo[] | [];
+}

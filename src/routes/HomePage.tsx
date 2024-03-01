@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import SearchBox from "../components/SearchBox";
 import Gallery from "../components/gallery/Gallery";
+import HistoryBtns from "../components/shared/HistoryBtns";
 
 export default function HomePage() {
   return (
     <Container>
       <SearchBox />
+      <HistoryBtns />
       <Gallery />
     </Container>
   );

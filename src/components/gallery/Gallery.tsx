@@ -1,18 +1,27 @@
 import styled from "styled-components";
 import { UseSearch } from "../../context/Searchcontext";
 import { Photo } from "../../interfaces/GalleryTypes";
+import { UseGallery } from "../../context/Gallerycontext";
+import SliderModal from "../modal/SliderModal";
 
 export default function Gallery() {
   const { filteredData } = UseSearch();
+  const { openModal, modalOpen } = UseGallery();
   return (
     <Container>
       {filteredData && filteredData.length > 0 ? (
         filteredData.map((photo: Photo) => (
-          <img key={photo.id} src={photo.urls.small} alt="" />
+          <Image
+            key={photo.id}
+            src={photo.urls.small}
+            alt=""
+            onClick={() => openModal(photo.id)}
+          />
         ))
       ) : (
         <NotFound>No results found.</NotFound>
       )}
+      <SliderModal children={undefined} Open={modalOpen} />
     </Container>
   );
 }
@@ -27,4 +36,13 @@ const NotFound = styled.p`
   color: #fff;
   font-size: 700;
   font-size: 2rem;
+`;
+
+const Image = styled.img`
+  opacity: 1;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  &:hover {
+    opacity: 0.8;
+  }
 `;

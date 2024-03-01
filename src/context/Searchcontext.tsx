@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { SearchContextProps } from "../interfaces/DataTypes";
-import { fetchPopularPhotos, fetchSearchPhotos } from "../api/gallery";
+import { fetchPopularPhotos, fetchSearchPhotos } from "../api/api";
 import { Photo } from "../interfaces/GalleryTypes";
 import { useQuery } from "react-query";
 

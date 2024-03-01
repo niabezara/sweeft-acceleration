@@ -30,3 +30,22 @@ export const fetchPopularPhotos = async () => {
 
   return response.data;
 };
+
+// statistic of the photos
+export const getStatisticsForPhoto = async (photoId: string) => {
+  try {
+    const response = await axios.get(
+      `https://api.unsplash.com/photos/${photoId}/statistics`,
+      {
+        headers: {
+          Authorization: `Client-ID ${key}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching photo statistics:", error);
+    throw error;
+  }
+};
