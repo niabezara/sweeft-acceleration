@@ -1,14 +1,8 @@
 import styled from "styled-components";
+import { UseSearch } from "../context/Searchcontext";
 
-interface SearchBoxProps {
-  searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function SearchBox({
-  searchQuery,
-  setSearchQuery,
-}: SearchBoxProps) {
+export default function SearchBox() {
+  const { searchQuery, setSearchQuery } = UseSearch();
   return (
     <Form action="">
       <label htmlFor="text">Search Photos</label>

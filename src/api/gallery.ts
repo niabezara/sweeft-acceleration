@@ -7,9 +7,9 @@ const key = import.meta.env.VITE_KEY;
 // search photos
 export const fetchSearchPhotos = async (query: string) => {
   const response = await axios.get("https://api.unsplash.com/search/photos", {
-    params: { query: query },
+    params: { query: query, per_page: 1500 },
     headers: {
-      Authorization: "Client-ID wUHdcCf_x7v5FlSB5WpgsQ0uxK-lrU9-oa5RNpM-Fao",
+      Authorization: `Client-ID ${key}`,
     },
   });
 
@@ -24,7 +24,7 @@ export const fetchPopularPhotos = async () => {
       per_page: 20,
     },
     headers: {
-      Authorization: "Client-ID wUHdcCf_x7v5FlSB5WpgsQ0uxK-lrU9-oa5RNpM-Fao",
+      Authorization: `Client-ID ${key}`,
     },
   });
 
