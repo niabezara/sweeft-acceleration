@@ -19,7 +19,7 @@ export function useInfiniteScroll(
   const [photoOrder, setPhotoOrder] = useState(order_by);
   const [isLoading, setIsLoading] = useState(false);
   const observer = useRef<IntersectionObserver | null>(null);
-
+  console.log(page);
   const lastItemRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (isLoading) return;
@@ -40,8 +40,15 @@ export function useInfiniteScroll(
       setTimeout(async () => {
         const res = await fetchData(page, photoOrder);
         setIsLoading(false);
-        setItems([...items, ...res.data]);
+        setItems((prevItems) => {
+          const uniqueItems = res.data.filter(
+            (newItem: any) =>
+              !prevItems.some((existingItem) => existingItem.id === newItem.id)
+          );
+          return [...prevItems, ...uniqueItems];
+        });
         setPagination(res.data.pagination);
+        console.log(res.data);
       }, 1500);
 
       if (pagination?.current === pagination?.total) setHasMore(true);

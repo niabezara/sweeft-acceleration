@@ -1,24 +1,32 @@
 import axios from "axios";
+import { Photo } from "../interfaces/GalleryTypes";
 
-const key = import.meta.env.VITE_KEY;
 const BASE_URL = import.meta.env.VITE_URL;
+const key = import.meta.env.VITE_KEY;
 
-const instance = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-export const getPhotos = async (per_page: number, order_by: string) => {
-  const apiConfig = {
-    params: {
-      client_id: key,
-      per_page,
-      order_by,
+// search photos
+export const fetchSearchPhotos = async (query: string) => {
+  const response = await axios.get("https://api.unsplash.com/search/photos", {
+    params: { query: query },
+    headers: {
+      Authorization: "Client-ID wUHdcCf_x7v5FlSB5WpgsQ0uxK-lrU9-oa5RNpM-Fao",
     },
-  };
-  return await instance.get(`${BASE_URL}photos`, apiConfig);
+  });
+
+  return response.data.results;
 };
 
-export default instance;
+// popular photos
+export const fetchPopularPhotos = async () => {
+  const response = await axios.get("https://api.unsplash.com/photos", {
+    params: {
+      order_by: "popular",
+      per_page: 20,
+    },
+    headers: {
+      Authorization: "Client-ID wUHdcCf_x7v5FlSB5WpgsQ0uxK-lrU9-oa5RNpM-Fao",
+    },
+  });
+
+  return response.data;
+};
