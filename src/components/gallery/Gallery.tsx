@@ -20,14 +20,25 @@ export default function Gallery() {
   return (
     <Container>
       {filteredData && filteredData.length > 0 ? (
-        filteredData.map((photo: Photo) => (
-          <Image
-            key={photo.id}
-            src={photo.urls.small}
-            alt=""
-            onClick={() => openModal(photo.id, photo.urls.regular)}
-          />
-        ))
+        filteredData.map((photo: Photo, index) =>
+          index === filteredData.length - 1 ? (
+            <figure key={photo.id} className="images">
+              <Image
+                src={photo.urls.small}
+                alt=""
+                onClick={() => openModal(photo.id, photo.urls.regular)}
+              />
+            </figure>
+          ) : (
+            <figure key={photo.id} className="images">
+              <Image
+                src={photo.urls.small}
+                alt=""
+                onClick={() => openModal(photo.id, photo.urls.regular)}
+              />
+            </figure>
+          )
+        )
       ) : (
         <NotFound>No results found.</NotFound>
       )}
@@ -52,8 +63,7 @@ const Container = styled.div`
 
 const NotFound = styled.p`
   color: #fff;
-  font-size: 700;
-  font-size: 2rem;
+  font-size: 2rem; /* Corrected font-size value */
 `;
 
 const Image = styled.img`

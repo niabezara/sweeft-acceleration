@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { SearchContextProps } from "../interfaces/DataTypes";
 import { fetchPopularPhotos, fetchSearchPhotos } from "../api/api";
 import { Photo } from "../interfaces/GalleryTypes";
@@ -15,15 +22,15 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [pictureSearchHistory, setPictureSearchHistory] = useState<Photo[]>([]);
-  const [page, setPage] = useState(1);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [allData, setAllData] = useState<Photo[]>([]);
   const {
     data,
     isLoading: searchLoading,
     isError: searchError,
   } = useQuery(
-    ["photos", searchQuery, page],
-    () => fetchSearchPhotos(searchQuery, page),
+    ["photos", searchQuery, pageNumber],
+    () => fetchSearchPhotos(searchQuery, pageNumber),
     {
       keepPreviousData: true,
       staleTime: 300000,
@@ -35,19 +42,45 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     data: popularPhotos,
     isLoading: popularLoading,
     isError: popularError,
-  } = useQuery(["popularPhotos"], () => fetchPopularPhotos(page), {
+  } = useQuery(["popularPhotos"], () => fetchPopularPhotos(pageNumber), {
     staleTime: 300000,
     cacheTime: 3600000,
   });
 
-  // Infinite scroll handler
+  // Update the "allData" state when new data is loaded
+  useEffect(() => {
+    if (data) {
+      setAllData((prevData) => [...prevData, ...data]);
+    }
+  }, [data]);
 
-  // ***********************************************************
+  // infinite scroll implementation*****************************************************************
+  const handleScroll = () => {
+    const isAtBottom =
+      window.innerHeight + window.scrollY + 100 >= document.body.offsetHeight;
+
+    if (isAtBottom && !searchLoading && !searchError) {
+      console.log("Loading more data!");
+      setPageNumber((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    console.log("Adding scroll event listener");
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      console.log("Removing scroll event listener");
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [searchLoading, searchError]);
+
+  // ***********************************************************************************************
 
   //   filter photos
   const searchQ = typeof searchQuery === "string" ? searchQuery : "";
   const filteredData = searchQ
-    ? data?.filter((item: Photo | null | undefined) =>
+    ? allData?.filter((item: Photo | null | undefined) =>
         item?.description?.toLowerCase().includes(searchQ.toLowerCase())
       )
     : popularPhotos;
@@ -57,11 +90,10 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     query: any,
     isPictureSearch: boolean = false
   ) => {
-    setPage(1);
     if (query.trim() !== "") {
       let searchResults: any;
       if (isPictureSearch) {
-        searchResults = await fetchSearchPhotos(query, 1);
+        searchResults = await fetchSearchPhotos(query, pageNumber);
       } else {
         setSearchHistory((prevHistory) => {
           if (!prevHistory.includes(query)) {
@@ -84,6 +116,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
       e.preventDefault();
       updateSearchHistory(searchQuery);
       updateSearchHistory(searchQuery, true);
+      setPageNumber(1);
     }
   };
   // if users clicks already search button

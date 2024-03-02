@@ -7,12 +7,14 @@ const key = import.meta.env.VITE_KEY;
 // fetch all photos
 export const fetchPhotos = async (query: string, page: number) => {
   try {
-    const response = await axios.get(`https://api.unsplash.com/photos/`, {
-      params: { query: query, page: page },
-      headers: {
-        Authorization: `Client-ID ${key}`,
-      },
-    });
+    const response = await axios.get(
+      `https://api.unsplash.com/search/photos?${page}=1&query=${query}&per_page=20`,
+      {
+        headers: {
+          Authorization: `Client-ID ${key}`,
+        },
+      }
+    );
 
     return response.data;
   } catch (error) {
@@ -22,10 +24,15 @@ export const fetchPhotos = async (query: string, page: number) => {
 };
 
 // search photos
+// search photos
 export const fetchSearchPhotos = async (query: string, page: number) => {
   let cancel;
-  const response = await axios.get("https://api.unsplash.com/search/photos", {
-    params: { query: query, per_page: 20, page: page },
+  const response = await axios.get(`https://api.unsplash.com/search/photos`, {
+    params: {
+      page: page,
+      query: query,
+      per_page: 20,
+    },
     cancelToken: new axios.CancelToken((c) => (cancel = c)),
     headers: {
       Authorization: `Client-ID ${key}`,
@@ -38,10 +45,10 @@ export const fetchSearchPhotos = async (query: string, page: number) => {
 // popular photos
 export const fetchPopularPhotos = async (page: number) => {
   let cancel;
-  const response = await axios.get("https://api.unsplash.com/photos", {
+  const response = await axios.get(`https://api.unsplash.com/photos`, {
     params: {
-      order_by: "popular",
       page: page,
+      order_by: "popular",
       per_page: 20,
     },
     cancelToken: new axios.CancelToken((c) => (cancel = c)),
