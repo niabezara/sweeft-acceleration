@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import Gallery from "../components/gallery/Gallery";
 import HistoryBtns from "../components/shared/HistoryBtns";
+import HistoryGallery from "../components/gallery/HistoryGallery";
 
 export default function HistoryPage() {
   return (
     <Container>
       <HistoryBtns />
-      <Gallery />
+      <HistoryGallery />
     </Container>
   );
 }

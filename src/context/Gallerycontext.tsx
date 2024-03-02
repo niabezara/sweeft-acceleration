@@ -50,6 +50,7 @@ export function GalleryProvider({ children }: { children: React.ReactNode }) {
         selectedImage,
         dataStatistic,
         isLoading,
+        isError,
       }}
     >
       {children}

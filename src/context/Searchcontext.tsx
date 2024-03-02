@@ -1,9 +1,8 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { SearchContextProps } from "../interfaces/DataTypes";
 import { fetchPopularPhotos, fetchSearchPhotos } from "../api/api";
 import { Photo } from "../interfaces/GalleryTypes";
 import { useQuery } from "react-query";
-
 const SearchContext = createContext<SearchContextProps>(
   {} as SearchContextProps
 );
@@ -15,24 +14,35 @@ export function UseSearch() {
 export function SearchProvider({ children }: { children: React.ReactNode }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
-
-  const { data, isLoading, isError } = useQuery(
-    ["photos", searchQuery],
-    () => fetchSearchPhotos(searchQuery),
+  const [pictureSearchHistory, setPictureSearchHistory] = useState<Photo[]>([]);
+  const [page, setPage] = useState(1);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const {
+    data,
+    isLoading: searchLoading,
+    isError: searchError,
+  } = useQuery(
+    ["photos", searchQuery, page],
+    () => fetchSearchPhotos(searchQuery, page),
     {
       keepPreviousData: true,
       staleTime: 300000,
       cacheTime: 3600000,
     }
   );
+
   const {
     data: popularPhotos,
     isLoading: popularLoading,
     isError: popularError,
-  } = useQuery("popularPhotos", fetchPopularPhotos, {
+  } = useQuery(["popularPhotos"], () => fetchPopularPhotos(page), {
     staleTime: 300000,
     cacheTime: 3600000,
   });
+
+  // Infinite scroll handler
+
+  // ***********************************************************
 
   //   filter photos
   const searchQ = typeof searchQuery === "string" ? searchQuery : "";
@@ -43,16 +53,29 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     : popularPhotos;
 
   // search history
-  const updateSearchHistory = (query: any) => {
+  const updateSearchHistory = async (
+    query: any,
+    isPictureSearch: boolean = false
+  ) => {
+    setPage(1);
     if (query.trim() !== "") {
-      setSearchHistory((prevHistory) => {
-        if (!prevHistory.includes(query)) {
-          return [query, ...prevHistory];
-        }
-        return prevHistory;
-      });
+      let searchResults: any;
+      if (isPictureSearch) {
+        searchResults = await fetchSearchPhotos(query, 1);
+      } else {
+        setSearchHistory((prevHistory) => {
+          if (!prevHistory.includes(query)) {
+            return [query, ...prevHistory];
+          }
+          return prevHistory;
+        });
+      }
+      if (searchResults) {
+        setPictureSearchHistory((prevHistory) => {
+          return [...searchResults, ...prevHistory];
+        });
+      }
     }
-    console.log(searchHistory);
   };
 
   //   if the user press enter to save that history
@@ -60,9 +83,15 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     if (e.key === "Enter") {
       e.preventDefault();
       updateSearchHistory(searchQuery);
+      updateSearchHistory(searchQuery, true);
     }
   };
-
+  // if users clicks already search button
+  const handleButtonClick = (query: string) => {
+    setSearchQuery(query);
+    updateSearchHistory(query);
+    updateSearchHistory(query, true);
+  };
   return (
     <SearchContext.Provider
       value={{
@@ -70,13 +99,15 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
         searchHistory,
         handleKeyDown,
         setSearchQuery,
+        pictureSearchHistory,
         filteredData,
         data,
-        isLoading,
-        isError,
+        searchLoading,
+        searchError,
         popularPhotos,
         popularLoading,
         popularError,
+        handleButtonClick,
       }}
     >
       {children}

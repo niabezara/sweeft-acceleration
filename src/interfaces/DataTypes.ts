@@ -14,14 +14,15 @@ export interface SearchContextProps {
   searchHistory: string[];
   handleKeyDown: (e: any) => void;
   data: Photo[];
-
+  pictureSearchHistory: Photo[];
   setSearchQuery: Dispatch<SetStateAction<string>>;
   filteredData: Photo[] | null;
-  isLoading: boolean;
-  isError: boolean;
+  searchLoading: boolean;
+  searchError: boolean;
   popularPhotos?: Photo[] | null;
   popularLoading: boolean;
   popularError: boolean;
+  handleButtonClick: (query: string) => void;
 }
 
 export interface GalleryContextProps {
@@ -33,4 +34,5 @@ export interface GalleryContextProps {
   selectedImage: string | null;
   dataStatistic: Data;
   isLoading: boolean;
+  isError: boolean;
 }

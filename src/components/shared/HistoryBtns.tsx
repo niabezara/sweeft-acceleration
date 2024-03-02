@@ -2,11 +2,13 @@ import { UseSearch } from "../../context/Searchcontext";
 import styled from "styled-components";
 
 export default function HistoryBtns() {
-  const { searchHistory } = UseSearch();
+  const { searchHistory, handleButtonClick } = UseSearch();
   return (
     <Card>
       {searchHistory.map((query: any, index: number) => (
-        <Btn key={index}>{query}</Btn>
+        <Btn key={index} onClick={() => handleButtonClick(query)}>
+          {query}
+        </Btn>
       ))}
     </Card>
   );

@@ -3,20 +3,31 @@ import { UseSearch } from "../../context/Searchcontext";
 import { Photo } from "../../interfaces/GalleryTypes";
 import { UseGallery } from "../../context/Gallerycontext";
 import SliderModal from "../modal/SliderModal";
+import Loader from "../shared/Loader";
+import Error from "../shared/Error";
 
 export default function Gallery() {
   const { filteredData } = UseSearch();
-  const { openModal, modalOpen, saveimg } = UseGallery();
+  const { openModal, modalOpen, saveimg, isError, isLoading } = UseGallery();
+
+  if (isLoading) {
+    return <Loader />;
+  }
+  if (isError) {
+    return <Error />;
+  }
+
   return (
     <Container>
       {filteredData && filteredData.length > 0 ? (
         filteredData.map((photo: Photo) => (
-          <Image
-            key={photo.id}
-            src={photo.urls.small}
-            alt=""
-            onClick={() => openModal(photo.id, photo.urls.small)}
-          />
+          <figure key={photo.id}>
+            <Image
+              src={photo.urls.small}
+              alt=""
+              onClick={() => openModal(photo.id, photo.urls.regular)}
+            />
+          </figure>
         ))
       ) : (
         <NotFound>No results found.</NotFound>
