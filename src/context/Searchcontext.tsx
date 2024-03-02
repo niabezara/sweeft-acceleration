@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { SearchContextProps } from "../interfaces/DataTypes";
 import { fetchPopularPhotos, fetchSearchPhotos } from "../api/api";
 import { Photo } from "../interfaces/GalleryTypes";

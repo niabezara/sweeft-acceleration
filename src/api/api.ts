@@ -1,7 +1,5 @@
 import axios from "axios";
-import { Photo } from "../interfaces/GalleryTypes";
 
-const BASE_URL = import.meta.env.VITE_URL;
 const key = import.meta.env.VITE_KEY;
 
 // fetch all photos

@@ -60,7 +60,7 @@ export const LikeIcon: React.FC<SVGProps<SVGSVGElement>> = (props) => {
     </svg>
   );
 };
-export const Download: React.FC<SVGProps<SVGSVGElement>> = (props) => {
+export const Download: React.FC<SVGProps<SVGSVGElement>> = () => {
   return (
     <svg
       width="2.5rem"
@@ -83,7 +83,7 @@ export const Download: React.FC<SVGProps<SVGSVGElement>> = (props) => {
     </svg>
   );
 };
-export const View: React.FC<SVGProps<SVGSVGElement>> = (props) => {
+export const View: React.FC<SVGProps<SVGSVGElement>> = () => {
   return (
     <svg
       className="svg-icon"
