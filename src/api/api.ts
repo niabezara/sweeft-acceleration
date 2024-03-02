@@ -23,14 +23,14 @@ export const fetchPhotos = async (query: string, page: number) => {
 
 // search photos
 export const fetchSearchPhotos = async (query: string, page: number) => {
-  let cancel;
+ 
   const response = await axios.get(`https://api.unsplash.com/search/photos`, {
     params: {
       page: page,
       query: query,
       per_page: 20,
     },
-    cancelToken: new axios.CancelToken((c) => (cancel = c)),
+    cancelToken: new axios.CancelToken((c) => (c)),
     headers: {
       Authorization: `Client-ID ${key}`,
     },
@@ -41,14 +41,13 @@ export const fetchSearchPhotos = async (query: string, page: number) => {
 
 // popular photos
 export const fetchPopularPhotos = async (page: number) => {
-  let cancel;
   const response = await axios.get(`https://api.unsplash.com/photos`, {
     params: {
       page: page,
       order_by: "popular",
       per_page: 20,
     },
-    cancelToken: new axios.CancelToken((c) => (cancel = c)),
+    cancelToken: new axios.CancelToken((c) => c),
     headers: {
       Authorization: `Client-ID ${key}`,
     },
@@ -59,12 +58,11 @@ export const fetchPopularPhotos = async (page: number) => {
 
 // statistic of the photos
 export const getStatisticsForPhoto = async (photoId: string) => {
-  let cancel;
   try {
     const response = await axios.get(
       `https://api.unsplash.com/photos/${photoId}/statistics`,
       {
-        cancelToken: new axios.CancelToken((c) => (cancel = c)),
+        cancelToken: new axios.CancelToken((c) => c),
         headers: {
           Authorization: `Client-ID ${key}`,
         },
