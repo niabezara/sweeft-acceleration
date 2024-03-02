@@ -47,7 +47,6 @@ Create a .env file in the project root.
 Add the following environment variable:
 
 env
-Copy code
-REACT_APP_API_KEY=wUHdcCf_x7v5FlSB5WpgsQ0uxK-lrU9-oa5RNpM-Fao
+
 
 
