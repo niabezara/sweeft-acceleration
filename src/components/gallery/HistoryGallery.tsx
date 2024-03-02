@@ -15,7 +15,9 @@ export default function HistoryGallery() {
     <Container>
       {pictureSearchHistory && pictureSearchHistory.length > 0 ? (
         pictureSearchHistory.map((imageUrl, index) => (
-          <img key={index} src={imageUrl?.urls?.small} />
+          <figure>
+            <img key={index} src={imageUrl?.urls?.small} />
+          </figure>
         ))
       ) : (
         <Warning>No history found!</Warning>

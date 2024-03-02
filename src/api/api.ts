@@ -24,7 +24,6 @@ export const fetchPhotos = async (query: string, page: number) => {
 };
 
 // search photos
-// search photos
 export const fetchSearchPhotos = async (query: string, page: number) => {
   let cancel;
   const response = await axios.get(`https://api.unsplash.com/search/photos`, {

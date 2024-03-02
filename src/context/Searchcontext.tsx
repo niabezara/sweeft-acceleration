@@ -23,6 +23,8 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [pictureSearchHistory, setPictureSearchHistory] = useState<Photo[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
+  const [popularPageNumber, setPopularPageNumber] = useState(1);
+  const [allPopularData, setAllPopularData] = useState<Photo[]>([]);
   const [allData, setAllData] = useState<Photo[]>([]);
   const {
     data,
@@ -42,17 +44,26 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     data: popularPhotos,
     isLoading: popularLoading,
     isError: popularError,
-  } = useQuery(["popularPhotos"], () => fetchPopularPhotos(pageNumber), {
-    staleTime: 300000,
-    cacheTime: 3600000,
-  });
-
+  } = useQuery(
+    ["popularPhotos", popularPageNumber],
+    () => fetchPopularPhotos(popularPageNumber),
+    {
+      staleTime: 300000,
+      cacheTime: 3600000,
+    }
+  );
   // Update the "allData" state when new data is loaded
   useEffect(() => {
     if (data) {
       setAllData((prevData) => [...prevData, ...data]);
     }
   }, [data]);
+  // Update the "allPopularData" state when new data is loaded for popular
+  useEffect(() => {
+    if (popularPhotos) {
+      setAllPopularData((prevData) => [...prevData, ...popularPhotos]);
+    }
+  }, [popularPhotos]);
 
   // infinite scroll implementation*****************************************************************
   const handleScroll = () => {
@@ -60,20 +71,21 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
       window.innerHeight + window.scrollY + 100 >= document.body.offsetHeight;
 
     if (isAtBottom && !searchLoading && !searchError) {
-      console.log("Loading more data!");
       setPageNumber((prevPage) => prevPage + 1);
+    }
+
+    if (isAtBottom && !popularLoading && !popularError) {
+      setPopularPageNumber((prevPage) => prevPage + 1);
     }
   };
 
   useEffect(() => {
-    console.log("Adding scroll event listener");
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      console.log("Removing scroll event listener");
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [searchLoading, searchError]);
+  }, [searchLoading, searchError, popularLoading, popularError]);
 
   // ***********************************************************************************************
 
@@ -83,7 +95,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     ? allData?.filter((item: Photo | null | undefined) =>
         item?.description?.toLowerCase().includes(searchQ.toLowerCase())
       )
-    : popularPhotos;
+    : allPopularData;
 
   // search history
   const updateSearchHistory = async (
