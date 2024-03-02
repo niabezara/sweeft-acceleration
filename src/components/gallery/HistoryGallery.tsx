@@ -13,9 +13,13 @@ export default function HistoryGallery() {
   }
   return (
     <Container>
-      {pictureSearchHistory.map((imageUrl, index) => (
-        <img key={index} src={imageUrl?.urls?.small} />
-      ))}
+      {pictureSearchHistory && pictureSearchHistory.length > 0 ? (
+        pictureSearchHistory.map((imageUrl, index) => (
+          <img key={index} src={imageUrl?.urls?.small} />
+        ))
+      ) : (
+        <Warning>No history found!</Warning>
+      )}
     </Container>
   );
 }
@@ -31,4 +35,9 @@ const Container = styled.div`
     grid-template-columns: repeat(3, minmax(0, 1fr));
     row-gap: 2rem;
   }
+`;
+const Warning = styled.h2`
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
 `;

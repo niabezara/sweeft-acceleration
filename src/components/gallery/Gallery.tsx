@@ -21,13 +21,12 @@ export default function Gallery() {
     <Container>
       {filteredData && filteredData.length > 0 ? (
         filteredData.map((photo: Photo) => (
-          <figure key={photo.id}>
-            <Image
-              src={photo.urls.small}
-              alt=""
-              onClick={() => openModal(photo.id, photo.urls.regular)}
-            />
-          </figure>
+          <Image
+            key={photo.id}
+            src={photo.urls.small}
+            alt=""
+            onClick={() => openModal(photo.id, photo.urls.regular)}
+          />
         ))
       ) : (
         <NotFound>No results found.</NotFound>

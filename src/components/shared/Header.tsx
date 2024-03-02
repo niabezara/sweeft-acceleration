@@ -5,15 +5,17 @@ import { sidebarLinks } from "../../constants";
 const Header = () => {
   return (
     <Container>
-      <SubContainer>
-        <img
-          src="/assets/album.webp"
-          width="50"
-          height="50"
-          alt="icon of this photo album app"
-        />
-        <Title>Photo Album</Title>
-      </SubContainer>
+      <Link to="/" className="Link">
+        <SubContainer>
+          <img
+            src="/assets/album.webp"
+            width="50"
+            height="50"
+            alt="icon of this photo album app"
+          />
+          <Title>Photo Album</Title>
+        </SubContainer>
+      </Link>
       <SectionLinks>
         {sidebarLinks.map((link) => {
           return (
@@ -38,6 +40,10 @@ const Container = styled.div`
   background-color: black;
   color: white;
   width: 100%;
+  .Link {
+    text-decoration: none;
+    color: white;
+  }
 `;
 
 const SubContainer = styled.div`

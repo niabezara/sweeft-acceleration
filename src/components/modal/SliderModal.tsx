@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { UseGallery } from "../../context/Gallerycontext";
 import { useDisableBodyScroll } from "../../hooks/use-disable-scroll";
 import useOnClickOutside from "../../hooks/use-click-outside";
+import { LikeIcon, Download, View } from "../shared/Icons";
 
 interface ModalProps {
   children: React.ReactNode;
@@ -23,9 +24,18 @@ export default function SliderModal({ imageUrl, Open }: ModalProps) {
       <RetModal ref={RetRef}>
         <Image src={imageUrl} alt="Image" />
         <Wrap>
-          <p>Downloads{dataStatistic?.downloads.total}</p>
-          <p>Likes{dataStatistic?.likes.total}</p>
-          <p>Views{dataStatistic?.views.total}</p>
+          <Article>
+            <Download />
+            <p>{dataStatistic?.downloads.total.toLocaleString()}</p>
+          </Article>
+          <Article>
+            <LikeIcon />
+            <p>{dataStatistic?.likes.total.toLocaleString()}</p>
+          </Article>
+          <Article>
+            <View />
+            <p>{dataStatistic?.views.total.toLocaleString()}</p>
+          </Article>
         </Wrap>
       </RetModal>
     </>
@@ -68,4 +78,13 @@ const Wrap = styled.div`
 const Image = styled.img`
   width: 100%;
   max-height: 40rem;
+`;
+
+const Article = styled.article`
+  display: flex;
+  font-weight: 500;
+  font-size: 14px;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
 `;
