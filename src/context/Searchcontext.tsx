@@ -23,27 +23,16 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     data,
     isLoading: searchLoading,
     isError: searchError,
-  } = useQuery(
-    ["photos", searchQuery, pageNumber],
-    () => fetchSearchPhotos(searchQuery, pageNumber),
-    {
-      keepPreviousData: true,
-      staleTime: 300000,
-      cacheTime: 3600000,
-    }
+  } = useQuery(["photos", searchQuery, pageNumber], () =>
+    fetchSearchPhotos(searchQuery, pageNumber)
   );
 
   const {
     data: popularPhotos,
     isLoading: popularLoading,
     isError: popularError,
-  } = useQuery(
-    ["popularPhotos", popularPageNumber],
-    () => fetchPopularPhotos(popularPageNumber),
-    {
-      staleTime: 300000,
-      cacheTime: 3600000,
-    }
+  } = useQuery(["popularPhotos", popularPageNumber], () =>
+    fetchPopularPhotos(popularPageNumber)
   );
   // Update the "allData" state when new data is loaded
   useEffect(() => {

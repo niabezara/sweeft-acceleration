@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { CancelTokenSource } from "axios";
 
 const key = import.meta.env.VITE_KEY;
 
@@ -23,20 +23,27 @@ export const fetchPhotos = async (query: string, page: number) => {
 
 // search photos
 export const fetchSearchPhotos = async (query: string, page: number) => {
- 
-  const response = await axios.get(`https://api.unsplash.com/search/photos`, {
-    params: {
-      page: page,
-      query: query,
-      per_page: 20,
-    },
-    cancelToken: new axios.CancelToken((c) => (c)),
-    headers: {
-      Authorization: `Client-ID ${key}`,
-    },
-  });
-
-  return response.data.results;
+  let cancelTokenSource: CancelTokenSource | null = null;
+  cancelTokenSource = axios.CancelToken.source();
+  try {
+    const response = await axios.get(`https://api.unsplash.com/search/photos`, {
+      params: {
+        page: page,
+        query: query,
+        per_page: 20,
+      },
+      cancelToken: cancelTokenSource.token,
+      headers: {
+        Authorization: `Client-ID ${key}`,
+      },
+    });
+    return response.data.results;
+  } catch (error) {
+    if (axios.isCancel(error)) {
+    } else {
+      throw error;
+    }
+  }
 };
 
 // popular photos
@@ -62,7 +69,6 @@ export const getStatisticsForPhoto = async (photoId: string) => {
     const response = await axios.get(
       `https://api.unsplash.com/photos/${photoId}/statistics`,
       {
-        cancelToken: new axios.CancelToken((c) => c),
         headers: {
           Authorization: `Client-ID ${key}`,
         },
@@ -71,7 +77,6 @@ export const getStatisticsForPhoto = async (photoId: string) => {
 
     return response.data;
   } catch (e) {
-    if (axios.isCancel(e)) return;
-    console.error("Error fetching photo statistics:", e);
+    console.error(`Error fetching photo statistics `);
   }
 };
